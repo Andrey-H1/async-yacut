@@ -52,6 +52,10 @@ async def upload_view():
             files
         )
 
+        print(f"📂 [DEBUG] Получено файлов для обработки: {len(files)}")
+        print(f"✅ [DEBUG] Успешно загружено на Яндекс Диск: {filenames}")
+        print(f"❌ [DEBUG] Ошибки при загрузке: {errors}")
+
         if errors:
             for error in errors:
                 flash(
