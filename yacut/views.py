@@ -1,9 +1,7 @@
 import aiohttp
-import certifi
 from flask import flash, redirect, render_template, send_file, url_for
 from io import BytesIO
 import os
-import ssl
 from urllib.parse import urlparse
 
 from yacut import app, db
@@ -91,10 +89,8 @@ async def redirect_view(short_id):
 
     if is_file_download_link:
         try:
-            ssl_context = ssl.create_default_context(cafile=certifi.where())
-            connector = aiohttp.TCPConnector(ssl=ssl_context)
 
-            async with aiohttp.ClientSession(connector=connector) as session:
+            async with aiohttp.ClientSession() as session:
                 async with session.get(target) as file_response:
                     file_response.raise_for_status()
 
