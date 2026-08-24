@@ -58,9 +58,6 @@ async def upload_view():
                     f'Не удалось загрузить файл на Яндекс Диск: {error}',
                     'danger'
                 )
-                return render_template(
-                    'files.html', form=form, files_table_data=files_table_data
-                )
 
         for filename, original_link in zip(filenames, download_links):
             short_id = get_unique_short_id()
