@@ -50,15 +50,20 @@ async def upload_view():
         files = form.files.data
         try:
             print(f"📂 [DEBUG] Начинаем загрузку {len(files)} файлов...")
-            filenames, download_links, errors = await upload_file_to_yandex_disk(files)
+            filenames, download_links, errors = (
+                await upload_file_to_yandex_disk(files)
+            )
             print(f"✅ [DEBUG] Функция вернула данные. Ошибки: {errors}")
 
         except Exception as e:
             # ЭТА СТРОКА СРАБОТАЕТ, ЕСЛИ ФУНКЦИЯ УПАДЕТ С ОШИБКОЙ
-            print(f"💥 [CRITICAL] Критическая ошибка при вызове upload_file_to_yandex_disk: {e}")
+            print(
+                f"💥 [CRITICAL] Ошибка upload_file_to_yandex_disk: {e}"
+            )
             print(f"💥 [CRITICAL] Traceback: {type(e).__name__}")
-            # Даже при ошибке мы должны вернуть страницу, чтобы тест не падал сразу с 500 ошибкой
-            return render_template('files.html', form=form, files_table_data=files_table_data)
+            return render_template(
+                'files.html', form=form, files_table_data=files_table_data
+            )
 
         if errors:
             for error in errors:
