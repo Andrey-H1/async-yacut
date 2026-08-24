@@ -1,6 +1,4 @@
 import aiohttp
-import certifi
-import ssl
 
 from yacut import app
 from yacut.constants import (
@@ -16,13 +14,7 @@ async def upload_file_to_yandex_disk(files):
     download_links = []
     errors = []
 
-    ssl_context = ssl.create_default_context(cafile=certifi.where())
-    connector = aiohttp.TCPConnector(ssl=ssl_context)
-
-    async with aiohttp.ClientSession(
-        headers=AUTH_HEADERS,
-        connector=connector
-    ) as session:
+    async with aiohttp.ClientSession(headers=AUTH_HEADERS) as session:
 
         for file in files:
             filename = file.filename

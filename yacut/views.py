@@ -48,22 +48,9 @@ async def upload_view():
 
     if form.validate_on_submit():
         files = form.files.data
-        try:
-            print(f"📂 [DEBUG] Начинаем загрузку {len(files)} файлов...")
-            filenames, download_links, errors = (
-                await upload_file_to_yandex_disk(files)
-            )
-            print(f"✅ [DEBUG] Функция вернула данные. Ошибки: {errors}")
-
-        except Exception as e:
-            # ЭТА СТРОКА СРАБОТАЕТ, ЕСЛИ ФУНКЦИЯ УПАДЕТ С ОШИБКОЙ
-            print(
-                f"💥 [CRITICAL] Ошибка upload_file_to_yandex_disk: {e}"
-            )
-            print(f"💥 [CRITICAL] Traceback: {type(e).__name__}")
-            return render_template(
-                'files.html', form=form, files_table_data=files_table_data
-            )
+        filenames, download_links, errors = await upload_file_to_yandex_disk(
+            files
+        )
 
         if errors:
             for error in errors:
