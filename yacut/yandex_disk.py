@@ -14,7 +14,9 @@ async def upload_file_to_yandex_disk(files):
     download_links = []
     errors = []
 
-    async with aiohttp.ClientSession(headers=AUTH_HEADERS) as session:
+    async with aiohttp.ClientSession(
+        headers=AUTH_HEADERS,
+    ) as session:
 
         for file in files:
             filename = file.filename
