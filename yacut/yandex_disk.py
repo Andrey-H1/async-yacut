@@ -41,7 +41,7 @@ async def upload_file_to_yandex_disk(files):
 
                 async with session.put(
                     upload_url,
-                    data=file.stream
+                    data=file.read()
                 ) as put_response:
 
                     put_response.raise_for_status()
