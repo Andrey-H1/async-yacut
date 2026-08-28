@@ -1,1 +1,5 @@
 Single-database configuration for Flask.
+
+flask db init — создать папку миграций (делается один раз). 
+flask db migrate -m "Initial migration" — создать новый скрипт миграции на основе изменений в моделях. 
+flask db upgrade — применить миграции к базе данных.

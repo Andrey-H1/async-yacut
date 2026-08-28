@@ -1,4 +1,5 @@
-from datetime import datetime, timezone
+from datetime import datetime
+import re
 
 from yacut import db
 from yacut.constants import ORIGINAL_URL_LENGTH, SHORT_URL_LENGTH
@@ -13,5 +14,12 @@ class URLMap(db.Model):
     timestamp = db.Column(
         db.DateTime,
         index=True,
-        default=lambda: datetime.now(timezone.utc)
+        default=datetime.now
     )
+
+    @staticmethod
+    def validate_short_id(custom_id, allowed_chars):
+        """Проверяет на наличие запрещенных символов."""
+        if not re.fullmatch(f'[{allowed_chars}]+', custom_id):
+            return False
+        return True

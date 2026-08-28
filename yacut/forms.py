@@ -1,9 +1,12 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import MultipleFileField
 from wtforms import StringField, SubmitField, URLField
-from wtforms.validators import DataRequired, Length, Optional
+from wtforms.validators import DataRequired, Length, Optional, Regexp
 
-from yacut.constants import MIN_LENGTH, ORIGINAL_URL_LENGTH, SHORT_URL_LENGTH
+from yacut.constants import (
+    AUTO_ALLOWED_CHARS, MIN_LENGTH,
+    ORIGINAL_URL_LENGTH, SHORT_URL_LENGTH
+)
 
 
 class URLMapForm(FlaskForm):
@@ -21,7 +24,11 @@ class URLMapForm(FlaskForm):
         'Ваш вариант короткой ссылки',
         validators=[
             Length(MIN_LENGTH, SHORT_URL_LENGTH),
-            Optional()
+            Optional(),
+            Regexp(
+                f'^[{AUTO_ALLOWED_CHARS}]+$',
+                message='Указано недопустимое имя для короткой ссылки'
+            )
         ]
     )
 
