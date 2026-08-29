@@ -2,7 +2,10 @@ from datetime import datetime
 import re
 
 from yacut import db
-from yacut.constants import ORIGINAL_URL_LENGTH, SHORT_URL_LENGTH
+from yacut.constants import (
+    AUTO_ALLOWED_CHARS, ORIGINAL_URL_LENGTH,
+    SHORT_URL_LENGTH
+)
 
 
 class URLMap(db.Model):
@@ -18,8 +21,8 @@ class URLMap(db.Model):
     )
 
     @staticmethod
-    def validate_short_id(custom_id, allowed_chars):
+    def validate_short_id(custom_id):
         """Проверяет на наличие запрещенных символов."""
-        if not re.fullmatch(f'[{allowed_chars}]+', custom_id):
+        if not re.fullmatch(f'[{AUTO_ALLOWED_CHARS}]+', custom_id):
             return False
         return True

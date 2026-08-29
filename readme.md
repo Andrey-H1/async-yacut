@@ -38,7 +38,14 @@
 ### 4. Выполнить миграции:
 flask db upgrade
 
-### 5. Запустить проект:
+### 5. Создать в директории проекта файл .env с пятью переменными окружения:
+FLASK_APP=yacut
+FLASK_DEBAG=1
+SECRET_KEY=your_secret_key
+DB=sqlite:///db.sqlite3
+DISK_TOKEN=your_disk_token
+
+### 6. Запустить проект:
 flask run
 
 

@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from http import HTTPStatus
 
-from yacut.constants import AUTO_ALLOWED_CHARS, SHORT_URL_LENGTH
+from yacut.constants import SHORT_URL_LENGTH
 from yacut.error_handlers import InvalidAPIUsage
 from yacut import app, db
 from yacut.models import URLMap
@@ -12,13 +12,15 @@ from yacut.validators import get_url_map_by_short_id
 @app.route('/api/id/<string:short_id>/', methods=['GET'])
 def get_original_url(short_id):
     """Функция получения оригинальной ссылки по короткому идентификатору."""
-    url_map = get_url_map_by_short_id(short_id)
-    if url_map is None:
+    if get_url_map_by_short_id(short_id) is None:
         raise InvalidAPIUsage(
             'Указанный id не найден',
             status_code=HTTPStatus.NOT_FOUND
         )
-    return jsonify({'url': url_map.original}), HTTPStatus.OK
+    return (
+        jsonify({'url': get_url_map_by_short_id(short_id).original}),
+        HTTPStatus.OK
+    )
 
 
 @app.route('/api/id/', methods=['POST'])
@@ -47,12 +49,12 @@ def create_short_url():
                 'Указано недопустимое имя для короткой ссылки'
             )
 
-        if not URLMap.validate_short_id(custom_id, AUTO_ALLOWED_CHARS):
+        if not URLMap.validate_short_id(custom_id):
             raise InvalidAPIUsage(
                 'Указано недопустимое имя для короткой ссылки'
             )
 
-        if URLMap.query.filter_by(short=custom_id).first():
+        if get_url_map_by_short_id(custom_id) is not None:
             raise InvalidAPIUsage(
                 'Предложенный вариант короткой ссылки уже существует.'
             )

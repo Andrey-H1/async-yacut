@@ -1,6 +1,5 @@
 from flask import flash
 
-from yacut.constants import AUTO_ALLOWED_CHARS
 from yacut.models import URLMap
 
 
@@ -16,13 +15,13 @@ def is_custom_id_valid(custom_id):
     if not custom_id:
         return True
 
-    if not URLMap.validate_short_id(custom_id, AUTO_ALLOWED_CHARS):
+    if not URLMap.validate_short_id(custom_id):
         flash(
             'Недопустимые символы в названии короткой ссылки.', 'danger'
         )
         return False
 
-    if URLMap.query.filter_by(short=custom_id).first() or custom_id == 'files':
+    if get_url_map_by_short_id(custom_id) or custom_id == 'files':
         flash(
             'Предложенный вариант короткой ссылки уже существует.', 'danger'
         )
